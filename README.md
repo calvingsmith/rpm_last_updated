@@ -3,53 +3,41 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with rpm_last_updated](#setup)
+2. [Setup - The basics of getting started with rpm_last_updated](#setup)
     * [What rpm_last_updated affects](#what-rpm_last_updated-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with rpm_last_updated](#beginning-with-rpm_last_updated)
-4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
+3. [Usage - Configuration options and additional functionality](#usage)
+4. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
-
-## Module Description
-
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
-
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+This package is a puppet module that finds the last time an RPM was installed on the 
+system and logs it as a puppet fact in a manner consumable by the satellite server
 
 ## Setup
 
 ### What rpm_last_updated affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+* This is designed to create a puppet fact that is loaded into the satellite server
+  and be queried for reporting purposes
 
 ### Setup Requirements **OPTIONAL**
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+1. Install in /etc/puppet/modules
+2. build using puppet build rpm_last_updated
+3. push puppet module into a puppet repo on the satellite server 
 
-### Beginning with rpm_last_updated
+(module would be at /etc/puppet/modules/rpm_last_updated/pkgs)
 
-The very basic steps needed for a user to get the module up and running.
+4. You would then be able to attach this module to servers via content views
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+5. once the module is set up and runs against your servers, you will be able to run 
+   a query against the satellite to find last updated server by
+
+hammer fact list --search "fact = rpm_last_updated"
+
 
 ## Usage
 
@@ -58,14 +46,12 @@ the fancy stuff with your module here.
 
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+This module queries the RPM database to find the most recent updated rpm and loads
+it into the puppet custom fact: rpm_last_updated
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+This was tested on RHEL 7 and satellite 6.2.7
 
 ## Development
 
